@@ -13,7 +13,4 @@ export const fetchCountries = countryName =>
   });
 
 
-  //.then( res => {
-  //  if (!res.ok) {
-  //    throw new Error(response.status);
-  //  }
+ 
