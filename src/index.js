@@ -15,7 +15,7 @@ const DEBOUNCE_DELAY = 300;
 const cleanMarkup = ref => (ref.innerHTML = '');
 
 const handleCountryInput = e => {
-  e.preventDefault();
+  //e.preventDefault();
   const textInput = e.target.value.trim();
 
   if (!textInput) {
@@ -23,6 +23,8 @@ const handleCountryInput = e => {
     cleanMarkup(countryInfoEl);
     return;
   }
+
+
   fetchCountries(textInput)
   .then(data => {
     console.log(data);
@@ -40,6 +42,39 @@ const handleCountryInput = e => {
     Notify.failure('На жаль, країни з такою назвою немає');
   });
 };
+
+const renderMarkup = data => {
+  if (data.length === 1) {
+    cleanMarkup(countryListEl);
+    const markupInfo = createInfoMarkup(data);
+    countryInfoEl.innerHTML = markupInfo;
+  } else {
+    cleanMarkup(countryInfoEl);
+    const markupList = createListMarkup(data);
+    countryListEl.innerHTML = markupList;
+  }
+};
+
+const createListMarkup = data => {
+  return data
+    .map(
+      ({ name, flags }) =>
+        `<li><img src="${flags.png}" alt="${name.official}" width="60" height="40">${name.official}</li>`
+    )
+    .join('');
+};
+
+const createInfoMarkup = data => {
+  return data.map(
+    ({ name, capital, population, flags, languages }) =>
+      `<img src="${flags.png}" alt="${name.official}" width="200" height="100">
+      <h1>${name.official}</h1>
+      <p>Capital: ${capital}</p>
+      <p>Population: ${population}</p>
+      <p>Languages: ${Object.values(languages)}</p>`
+  );
+};
+
 
 
 
